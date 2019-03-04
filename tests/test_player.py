@@ -1,7 +1,8 @@
 import unittest
 from src.Character import Character
-from src.Player import Player
-
+from src.Player import Player, PlayerDeadException
+from src.Cards import BeerCard, Suit
+import src.Player
 
 class TestPlayer(unittest.TestCase):
     def test_init(self):
@@ -28,3 +29,13 @@ class TestPlayer(unittest.TestCase):
         player_samuel = Player(name='Samuel', role='Sheriff', character=character)
         self.assertEqual(player_samuel.get_start_health(), 5)
 
+    def test_player_die(self):
+        beer_card = BeerCard(Suit.HEARTS, 5)
+        character = Character(name='Billie the Kid', health=1)
+        player_samuel = Player(name='Samuel', role='Sheriff', character=character)
+        self.assertEqual(player_samuel.health, 1)
+        player_samuel.add_card(beer_card)
+        player_samuel.change_health(-1)
+        self.assertEqual(player_samuel.health, 1)
+        with self.assertRaises(PlayerDeadException):
+            player_samuel.change_health(-1)

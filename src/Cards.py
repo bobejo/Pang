@@ -3,47 +3,47 @@ import abc
 
 
 class Card(metaclass=abc.ABCMeta):
-    def __init__(self, name, suit, value, card_target):
+    def __init__(self, name, suit, value, card_position):
         self.name = name
         self.suit = suit
         self.value = value
-        self.card_target = card_target
+        self.card_position = card_position
 
 
 class PangCard(Card):
     def __init__(self, suit, value):
-        Card.__init__(self, CardName.PANG, suit, value, card_target=CardPosition.TARGET)
+        Card.__init__(self, CardName.PANG, suit, value, card_position=CardPosition.TARGET)
 
 
 class MissCard(Card):
     def __init__(self, suit, value):
-        Card.__init__(self, CardName.MISS, suit, value, card_target=CardPosition.SELF)
+        Card.__init__(self, CardName.MISS, suit, value, card_position=CardPosition.SELF)
 
 
 class DrawCard(Card):
     def __init__(self, name, suit, value, draw_amount):
-        Card.__init__(self, name, suit, value, card_target=CardPosition.SELF)
+        Card.__init__(self, name, suit, value, card_position=CardPosition.SELF)
         self.draw_amount = draw_amount
 
 
 class BeerCard(Card):
     def __init__(self, suit, value):
-        Card.__init__(self, CardName.BEER, suit, value, card_target=CardPosition.SELF)
+        Card.__init__(self, CardName.BEER, suit, value, card_position=CardPosition.SELF)
 
 
 class PanikCard(Card):
     def __init__(self, suit, value):
-        Card.__init__(self, CardName.PANIK, suit, value, card_target=CardPosition.TARGET)
+        Card.__init__(self, CardName.PANIK, suit, value, card_position=CardPosition.TARGET)
 
 
 class DestroyCard(Card):
     def __init__(self, suit, value):
-        Card.__init__(self, CardName.CATBALOU, suit, value, card_target=CardPosition.TARGET)
+        Card.__init__(self, CardName.CATBALOU, suit, value, card_position=CardPosition.TARGET)
 
 
 class EquipmentCard(Card):
     def __init__(self, name, suit, value, ability):
-        Card.__init__(self, name, suit, value, card_target=CardPosition.FRONT)
+        Card.__init__(self, name, suit, value, card_position=CardPosition.FRONT)
         self.ability = ability
 
 
@@ -64,7 +64,7 @@ class ScopeCard(EquipmentCard):
 
 class WeaponCard(Card):
     def __init__(self, name, suit, value, weapon_range):
-        Card.__init__(self, name, suit, value, card_target=CardPosition.FRONT)
+        Card.__init__(self, name, suit, value, card_position=CardPosition.FRONT)
         self.weapon_range = weapon_range
 
 

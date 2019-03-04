@@ -16,7 +16,7 @@ class Player:
 
     def change_health(self, value):
         self.health += value
-        if self.health < 0:
+        if self.health < 1:
             if self.has_beer():
                 logging.info('Player {} has {} life and need to drink beer')
                 beer_card = self.get_beer()
