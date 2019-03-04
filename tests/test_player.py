@@ -2,9 +2,10 @@ import unittest
 from src.Character import Character
 from src.Player import Player, PlayerDeadException
 from src.Cards import BeerCard, Suit
-import src.Player
+
 
 class TestPlayer(unittest.TestCase):
+
     def test_init(self):
         character = Character(name='Billie the Kid', health=5)
         player_samuel = Player(name='Samuel', role='Sheriff', character=character)

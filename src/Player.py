@@ -1,6 +1,7 @@
 import logging
 from src.Cards import BeerCard
 
+
 class Player:
     def __init__(self, name, role, character):
         self.name = name

@@ -2,14 +2,14 @@ import unittest
 import src.Cards as cards
 
 
-class TestPlayer(unittest.TestCase):
+class TestCards(unittest.TestCase):
 
     def test_card_attributes(self):
         card = cards.Card('test_card', cards.Suit.HEARTS, 5, cards.CardPosition.TARGET)
         self.assertEqual(card.name, 'test_card')
         self.assertEqual(card.value, 5)
         self.assertEqual(card.suit, cards.Suit.HEARTS)
-        self.assertEqual(card.card_target, cards.CardPosition.TARGET)
+        self.assertEqual(card.card_position, cards.CardPosition.TARGET)
 
     def test_card_instances(self):
         pang_card = cards.PangCard(cards.Suit.HEARTS, 5)
