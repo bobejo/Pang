@@ -9,16 +9,15 @@ class Card(metaclass=abc.ABCMeta):
         self.value = value
         self.card_target = card_target
 
-    def get_value(self):
-        return self.value
-
-    def get_suit(self):
-        return self.suit
-
 
 class PangCard(Card):
     def __init__(self, suit, value):
         Card.__init__(self, CardName.PANG, suit, value, card_target=CardPosition.TARGET)
+
+
+class MissCard(Card):
+    def __init__(self, suit, value):
+        Card.__init__(self, CardName.MISS, suit, value, card_target=CardPosition.SELF)
 
 
 class DrawCard(Card):
@@ -48,19 +47,19 @@ class EquipmentCard(Card):
         self.ability = ability
 
 
-class HorseCard(Card):
+class HorseCard(EquipmentCard):
     def __init__(self, suit, value):
-        Card.__init__(self, CardName.HORSE, suit, value)
+        EquipmentCard.__init__(self, CardName.HORSE, suit, value, ability='Evasion')
 
 
-class BarrelCard(Card):
+class BarrelCard(EquipmentCard):
     def __init__(self, suit, value):
-        Card.__init__(self, CardName.BARREL, suit, value)
+        EquipmentCard.__init__(self, CardName.BARREL, suit, value,ability='Block')
 
 
-class ScopeCard(Card):
+class ScopeCard(EquipmentCard):
     def __init__(self, suit, value):
-        Card.__init__(self, CardName.SCOPE, suit, value)
+        EquipmentCard.__init__(self, CardName.SCOPE, suit, value,ability='Range')
 
 
 class WeaponCard(Card):
@@ -94,6 +93,7 @@ class CardName(enum.Enum):
     Enum representing each card name
     """
     PANG = "Pang"
+    MISS = 'Miss'
     BEER = 'Beer'
     CATBALOU = "Catbalou"
     PANIK = "Panik"
