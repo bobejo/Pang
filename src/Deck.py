@@ -32,18 +32,21 @@ class StandardDeck:
         else:
             return deck
 
-    def take_top_card(self, reshuffle=True):
+    def take_top_card(self, amount=1, reshuffle=True):
         """
         Returns top card and removes from deck.
 
         :return: TopCard
         """
-        if len(self.deck_of_cards) == 0:
-            if reshuffle:
-                self.deck_of_cards = self.create_deck()
-            else:
-                raise EmptyDeckError()
-        return self.deck_of_cards.pop()
+        cards = []
+        for i in range(amount):
+            if len(self.deck_of_cards) == 0:
+                if reshuffle:
+                    self.deck_of_cards = self.create_deck()
+                else:
+                    raise EmptyDeckError()
+            cards.append(self.deck_of_cards.pop())
+        return
 
     def put_card_on_top(self, card):
         """

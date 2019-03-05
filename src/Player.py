@@ -10,10 +10,15 @@ class Player:
         self.hand = []
         self.health = self.get_start_health()
         self.weapon = None
-        self.equipment = None
+        self.evasion = 0
+        self.block = False
 
-    def add_card(self, card):
-        self.hand.append(card)
+    def add_cards(self, cards):
+        for card in cards:
+            self.hand.append(card)
+
+    def remove_card(self, card):
+        self.hand.remove(card)
 
     def change_health(self, value):
         self.health += value

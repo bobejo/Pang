@@ -26,12 +26,22 @@ class DrawCard(Card):
         self.draw_amount = draw_amount
 
 
+class WellsFargoCard(DrawCard):
+    def __init__(self, name, suit, value):
+        DrawCard.__init__(self, name, suit, value, draw_amount=3)
+
+
+class StageCoachCard(DrawCard):
+    def __init__(self, name, suit, value):
+        DrawCard.__init__(self, name, suit, value, draw_amount=2)
+
+
 class BeerCard(Card):
     def __init__(self, suit, value):
         Card.__init__(self, CardName.BEER, suit, value, card_position=CardPosition.SELF)
 
 
-class PanikCard(Card):
+class PanicCard(Card):
     def __init__(self, suit, value):
         Card.__init__(self, CardName.PANIK, suit, value, card_position=CardPosition.TARGET)
 
