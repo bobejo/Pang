@@ -10,8 +10,10 @@ class Player:
         self.hand = []
         self.health = self.get_start_health()
         self.weapon = None
-        self.evasion = 0
-        self.block = False
+        self.equipment = None
+
+    def __str__(self):
+        return 'Player {}'.format(self.name)
 
     def add_cards(self, cards):
         for card in cards:

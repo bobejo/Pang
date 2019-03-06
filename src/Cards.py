@@ -9,6 +9,9 @@ class Card(metaclass=abc.ABCMeta):
         self.value = value
         self.card_position = card_position
 
+    def __str__(self):
+        return self.name.value
+
 
 class PangCard(Card):
     def __init__(self, suit, value):
@@ -27,13 +30,13 @@ class DrawCard(Card):
 
 
 class WellsFargoCard(DrawCard):
-    def __init__(self, name, suit, value):
-        DrawCard.__init__(self, name, suit, value, draw_amount=3)
+    def __init__(self, suit, value):
+        DrawCard.__init__(self, CardName.WELLSFARGO, suit, value, draw_amount=3)
 
 
 class StageCoachCard(DrawCard):
-    def __init__(self, name, suit, value):
-        DrawCard.__init__(self, name, suit, value, draw_amount=2)
+    def __init__(self, suit, value):
+        DrawCard.__init__(self, CardName.STAGECOACH, suit, value, draw_amount=2)
 
 
 class BeerCard(Card):
@@ -64,12 +67,12 @@ class HorseCard(EquipmentCard):
 
 class BarrelCard(EquipmentCard):
     def __init__(self, suit, value):
-        EquipmentCard.__init__(self, CardName.BARREL, suit, value,ability='Block')
+        EquipmentCard.__init__(self, CardName.BARREL, suit, value, ability='Block')
 
 
 class ScopeCard(EquipmentCard):
     def __init__(self, suit, value):
-        EquipmentCard.__init__(self, CardName.SCOPE, suit, value,ability='Range')
+        EquipmentCard.__init__(self, CardName.SCOPE, suit, value, ability='Range')
 
 
 class WeaponCard(Card):
@@ -105,6 +108,8 @@ class CardName(enum.Enum):
     PANG = "Pang"
     MISS = 'Miss'
     BEER = 'Beer'
+    WELLSFARGO = 'Wellsfargo'
+    STAGECOACH = 'Stagecoach'
     CATBALOU = "Catbalou"
     PANIK = "Panik"
     GATLING = 'Gatling'

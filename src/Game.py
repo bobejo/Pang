@@ -25,7 +25,6 @@ class Game:
         if amount_of_players <= len(roles):
             roles = roles[:amount_of_players]
             random.shuffle(roles)
-
             for player, role in zip(self.player_names, roles):
                 players.append(Player(name=player, role=role, character=self.get_character()))
             return players
@@ -56,48 +55,54 @@ class Game:
         :return:
         """
         player_index = self.players.index(self.active_player)
-
+        player_range = 1
+        if self.active_player.weapon:
+            player_range = self.active_player.weapon.weapon_range
+        if isinstance(self.active_player.equipment, Cards.ScopeCard):
+            player_range += 1
+        if player_range >= 3:
+            return self.players.remove(self.active_player)
         possible_targets = []
-        for i in range(player_index):
-            possible_targets.append(self.players[i])
-            possible_targets.append(self.players[i + player_index + 1])
-        return set(possible_targets)
+        players = self.players.copy()
+        players.extend(players)
+
+        for i in range(player_index-player_range, player_index+player_range+1):
+            possible_targets.append(players[i])
+        possible_targets.remove(self.active_player)
+        return possible_targets
 
     def use_card(self, card, target=None):
         if isinstance(card, Cards.PangCard):
             if isinstance(target, Player):
                 if target in self.get_possible_targets():
-                    self.active_player.remove_card(card)
                     logging.info('Using pang! on {}'.format(target))
+                    self.active_player.remove_card(card)
                     # TODO add miss card function
                     # TODO check barrel function
                     target.change_health(-1)
                 else:
-                    logging.info('Target {} is out of range.'.format(target))
+                    raise InvalidTargetException('Target {} is out of range.'.format(target))
             else:
-                logging.info('Target {} is not a valid target for pang! card.'.format(target))
+                raise InvalidTargetException('Target {} is not a valid target'.format(target))
         elif isinstance(card, Cards.MissCard):
             if isinstance(target, Player):
                 self.active_player.remove_card(card)
                 # TODO create miss card trigger
                 logging.info('Using miss card')
-        elif isinstance(card, Cards.WellsFargoCard):
-            logging.info('Using Wellsfargo, drawing 3 cards')
+
+        elif isinstance(card, Cards.DrawCard):
+            logging.info('Using card {}, adding {} cards to hand.'.format(card, card.draw_amount))
+            self.active_player.add_cards(self.deck.take_top_card(amount=card.draw_amount))
             self.active_player.remove_card(card)
-            self.active_player.add_cards(self.deck.take_top_card(amount=3))
-        elif isinstance(card, Cards.StageCoachCard):
-            logging.info('Using StageCoach, drawing 2 cards')
-            self.active_player.remove_card(card)
-            self.active_player.add_cards(self.deck.take_top_card(amount=2))
-        elif isinstance(card, Cards.HorseCard):
-            logging.info('Riding Horse, setting evasion to 1')
-            self.active_player.remove_card(card)
-            self.active_player.evasion = 1
-        elif isinstance(card, Cards.BarrelCard):
-            logging.info('Equipping barrel, adding block')
-            self.active_player.remove_card(card)
+        elif isinstance(card, Cards.EquipmentCard):
+            logging.info('Equipping {}, with ability to {}'.format(card, card.ability))
+            self.active_player.equipment = card
             self.active_player.remove_card(card)
 
+        elif isinstance(card, Cards.WeaponCard):
+            logging.info('Equipping {}, setting range to {}'.format(card, card.weapon_range))
+            self.active_player.weapon = card
+            self.active_player.remove_card(card)
 
 
 
@@ -110,3 +115,7 @@ class Roles(enum.Enum):
     OUTLAW = 'Outlaw'
     RENEGADE = 'Renegade'
     DEPUTY = 'Deputy'
+
+
+class InvalidTargetException(Exception):
+    pass

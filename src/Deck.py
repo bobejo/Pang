@@ -46,7 +46,7 @@ class StandardDeck:
                 else:
                     raise EmptyDeckError()
             cards.append(self.deck_of_cards.pop())
-        return
+        return cards
 
     def put_card_on_top(self, card):
         """
