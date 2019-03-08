@@ -77,8 +77,10 @@ class Game:
                 if target in self.get_possible_targets():
                     logging.info('Using pang! on {}'.format(target))
                     self.active_player.remove_card(card)
-                    # TODO add miss card function
-                    # TODO check barrel function
+                    if self.use_barrel(target):
+                        return True
+                    if self.use_miss_card(target):
+                        return True
                     target.change_health(-1)
                 else:
                     raise InvalidTargetException('Target {} is out of range.'.format(target))
@@ -104,7 +106,20 @@ class Game:
             self.active_player.weapon = card
             self.active_player.remove_card(card)
 
+    def use_miss_card(self, target):
+        for card in target.hand:
+            if isinstance(card, Cards.MissCard):
+                target.remove_card(card)
+                return True
+        return False
 
+    def use_barrel(self, target):
+        if isinstance(target.equipment, Cards.BarrelCard):
+            barrel_card = self.deck.take_top_card()
+            if barrel_card.suit == Cards.Suit.HEARTS:
+                return True
+        else:
+            return False
 
 class Roles(enum.Enum):
     """

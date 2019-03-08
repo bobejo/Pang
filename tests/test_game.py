@@ -79,9 +79,9 @@ class TestGame(unittest.TestCase):
         game_object.active_player.add_cards([pistol, rifle])
         self.assertIsNone(game_object.active_player.weapon)
         game_object.use_card(rifle)
-        self.assertEqual(game_object.active_player.equipment, rifle)
-        #game_object.use_card(pistol)
-        #self.assertEqual(game_object.active_player.equipment, pistol)
+        self.assertEqual(game_object.active_player.weapon, rifle)
+        game_object.use_card(pistol)
+        self.assertEqual(game_object.active_player.weapon, pistol)
 
     def test_use_draw_cards(self):
 
