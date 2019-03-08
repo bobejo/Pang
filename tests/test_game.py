@@ -1,5 +1,5 @@
 import unittest
-from src.Game import Game, InvalidTargetException
+from src.Game import Game, InvalidTargetException, StartGameException
 import src.Cards as Cards
 
 
@@ -12,10 +12,22 @@ class TestGame(unittest.TestCase):
         pass
 
     def test_draw_start_hand(self):
-        pass
+        player_names = ['Samuel', 'Gustav', 'Maria', 'Andrea', 'Tomas', 'Mona', 'Lennart']
+        game_object = Game(player_names)
+        game_object.draw_start_hand()
+        for player in game_object.players:
+            self.assertEqual(player.health, len(player.hand))
 
     def test_create_players(self):
-        pass
+        player_names = ['Samuel', 'Gustav', 'Maria', 'Andrea', 'Tomas', 'Mona', 'Lennart']
+        game_object = Game(player_names)
+        self.assertEqual(len(game_object.players), len(player_names))
+
+    def test_create_players_exception(self):
+        player_names = ['Samuel', 'Gustav', 'Maria', 'Andrea', 'Tomas', 'Mona', 'Lennart', 'Monna']
+        with self.assertRaises(StartGameException):
+            game_object = Game(player_names)
+
 
     def test_start_game(self):
         pass

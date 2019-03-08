@@ -29,7 +29,7 @@ class Game:
                 players.append(Player(name=player, role=role, character=self.get_character()))
             return players
         else:
-            raise IndexError('Invalid amount of players')
+            raise StartGameException('Maximum amount of players is 7 you entered {} players.'.format(amount_of_players))
 
     def draw_start_hand(self):
         for player in self.players:
@@ -76,7 +76,7 @@ class Game:
             if isinstance(target, Player):
                 if target in self.get_possible_targets():
                     logging.info('Using pang! on {}'.format(target))
-                    self.active_player.remove_card(card)
+                    self.active_player.remove_card(card, self.deck)
                     if self.use_barrel(target):
                         return True
                     if self.use_miss_card(target):
@@ -88,14 +88,14 @@ class Game:
                 raise InvalidTargetException('Target {} is not a valid target'.format(target))
         elif isinstance(card, Cards.MissCard):
             if isinstance(target, Player):
-                self.active_player.remove_card(card)
+                self.active_player.remove_card(card, self.deck)
                 # TODO create miss card trigger
                 logging.info('Using miss card')
 
         elif isinstance(card, Cards.DrawCard):
             logging.info('Using card {}, adding {} cards to hand.'.format(card, card.draw_amount))
             self.active_player.add_cards(self.deck.take_top_card(amount=card.draw_amount))
-            self.active_player.remove_card(card)
+            self.active_player.remove_card(card, self.deck)
         elif isinstance(card, Cards.EquipmentCard):
             logging.info('Equipping {}, with ability to {}'.format(card, card.ability))
             self.active_player.equipment = card
@@ -121,6 +121,7 @@ class Game:
         else:
             return False
 
+
 class Roles(enum.Enum):
     """
     Enum representing each suit.
@@ -133,4 +134,8 @@ class Roles(enum.Enum):
 
 
 class InvalidTargetException(Exception):
+    pass
+
+
+class StartGameException(Exception):
     pass

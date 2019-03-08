@@ -19,7 +19,9 @@ class Player:
         for card in cards:
             self.hand.append(card)
 
-    def remove_card(self, card):
+    def remove_card(self, card, deck=None):
+        if deck:
+            deck.discard_pile.append(card)
         self.hand.remove(card)
 
     def change_health(self, value):
