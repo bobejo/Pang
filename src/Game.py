@@ -11,12 +11,17 @@ class Game:
     def __init__(self, player_names):
         self.player_names = player_names
         self.deck = StandardDeck()
+        self.active_player_index = 0
         self.players = self.create_players()
         self.sheriff = self.get_sheriff()
         self.active_player = self.sheriff
 
-    def start_game(self):
-        pass
+
+    @classmethod
+    def start_game(cls, player_names):
+        game_object = cls(player_names)
+        game_object.draw_start_hand()
+        return game_object
 
     def create_players(self):
         roles = [Roles.SHERIFF, Roles.OUTLAW, Roles.RENEGADE, Roles.DEPUTY, Roles.OUTLAW, Roles.OUTLAW, Roles.DEPUTY]
@@ -25,8 +30,12 @@ class Game:
         if amount_of_players <= len(roles):
             roles = roles[:amount_of_players]
             random.shuffle(roles)
+            i = 0
             for player, role in zip(self.player_names, roles):
                 players.append(Player(name=player, role=role, character=self.get_character()))
+                if role == Roles.SHERIFF:
+                    self.active_player_index = i
+                i += 1
             return players
         else:
             raise StartGameException('Maximum amount of players is 7 you entered {} players.'.format(amount_of_players))
@@ -35,6 +44,7 @@ class Game:
         for player in self.players:
             for i in range(player.health):
                 player.add_cards(self.deck.take_top_card())
+        logging.info('Starting hand given to players')
 
     def get_sheriff(self):
         for player in self.players:
@@ -48,6 +58,14 @@ class Game:
         """
         # TODO fix function
         return Character(name='Billie the Kid', health=5)
+
+    def switch_player(self):
+        try:
+            self.active_player = self.players[self.active_player_index+1]
+            self.active_player_index += 1
+        except IndexError:
+            self.active_player_index = 0
+            self.active_player = self.players[self.active_player_index]
 
     def get_possible_targets(self):
         """
@@ -69,6 +87,7 @@ class Game:
         for i in range(player_index-player_range, player_index+player_range+1):
             possible_targets.append(players[i])
         possible_targets.remove(self.active_player)
+        logging.info('Possible targets are {}'.format(possible_targets))
         return possible_targets
 
     def use_card(self, card, target=None):

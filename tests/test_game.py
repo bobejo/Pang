@@ -5,11 +5,10 @@ import src.Cards as Cards
 
 class TestGame(unittest.TestCase):
 
-    def test_init(self):
-        pass
-
     def test_get_sheriff(self):
-        pass
+        player_names = ['Samuel']
+        game_object = Game(player_names)
+        self.assertEqual(game_object.get_sheriff(), game_object.active_player)
 
     def test_draw_start_hand(self):
         player_names = ['Samuel', 'Gustav', 'Maria', 'Andrea', 'Tomas', 'Mona', 'Lennart']
@@ -28,9 +27,24 @@ class TestGame(unittest.TestCase):
         with self.assertRaises(StartGameException):
             game_object = Game(player_names)
 
-
     def test_start_game(self):
-        pass
+        player_names = ['Samuel', 'Gustav', 'Maria', 'Andrea', 'Tomas', 'Mona', 'Lennart']
+        game_object = Game.start_game(player_names)
+
+    def test_switch_player(self):
+        player_names = ['Samuel', 'Gustav', 'Maria', 'Andrea', 'Tomas', 'Mona', 'Lennart']
+        game_object = Game.start_game(player_names)
+        self.assertEqual(game_object.players[game_object.active_player_index], game_object.active_player)
+
+        game_object.active_player = game_object.players[5]
+        game_object.active_player_index = 5
+        self.assertEqual(game_object.players[game_object.active_player_index], game_object.active_player)
+        game_object.switch_player()
+        self.assertEqual(game_object.active_player_index, 6)
+        self.assertEqual(game_object.players[game_object.active_player_index], game_object.active_player)
+        game_object.switch_player()
+        self.assertEqual(game_object.active_player_index, 0)
+        self.assertEqual(game_object.players[game_object.active_player_index], game_object.active_player)
 
     def test_get_possible_targets(self):
         pistol = Cards.PistolCard(Cards.Suit.DIAMONDS, 5)
