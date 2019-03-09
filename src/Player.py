@@ -1,4 +1,5 @@
 import logging
+import enum
 from src.Cards import BeerCard
 
 
@@ -49,6 +50,17 @@ class Player:
 
     def get_start_health(self):
         return self.character.health
+
+
+class Roles(enum.Enum):
+    """
+    Enum representing each suit.
+    """
+
+    SHERIFF = 'Sheriff'
+    OUTLAW = 'Outlaw'
+    RENEGADE = 'Renegade'
+    DEPUTY = 'Deputy'
 
 
 class PlayerDeadException(Exception):

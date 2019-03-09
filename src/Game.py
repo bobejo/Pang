@@ -3,7 +3,7 @@ import enum
 import logging
 import src.Cards as Cards
 from src.Deck import StandardDeck
-from src.Player import Player
+from src.Player import Player, Roles
 from src.Character import Character
 
 
@@ -141,15 +141,6 @@ class Game:
             return False
 
 
-class Roles(enum.Enum):
-    """
-    Enum representing each suit.
-    """
-
-    SHERIFF = 'Sheriff'
-    OUTLAW = 'Outlaw'
-    RENEGADE = 'Renegade'
-    DEPUTY = 'Deputy'
 
 
 class InvalidTargetException(Exception):

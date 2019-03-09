@@ -1,6 +1,7 @@
 import unittest
 from src.Game import Game, InvalidTargetException, StartGameException
 import src.Cards as Cards
+from src.Player import Roles
 
 
 class TestGame(unittest.TestCase):
@@ -30,6 +31,9 @@ class TestGame(unittest.TestCase):
     def test_start_game(self):
         player_names = ['Samuel', 'Gustav', 'Maria', 'Andrea', 'Tomas', 'Mona', 'Lennart']
         game_object = Game.start_game(player_names)
+        self.assertEqual(len(game_object.players),len(player_names))
+        self.assertEqual(game_object.sheriff.role, Roles.SHERIFF)
+        self.assertEqual(len(game_object.players), len(player_names))
 
     def test_switch_player(self):
         player_names = ['Samuel', 'Gustav', 'Maria', 'Andrea', 'Tomas', 'Mona', 'Lennart']
@@ -49,7 +53,7 @@ class TestGame(unittest.TestCase):
     def test_get_possible_targets(self):
         pistol = Cards.PistolCard(Cards.Suit.DIAMONDS, 5)
         player_names = ['Samuel', 'Gustav', 'Maria', 'Andrea', 'Tomas', 'Mona', 'Lennart']
-        game_object = Game(player_names)
+        game_object = Game.start_game(player_names)
         game_object.active_player = game_object.players[3]
         found_targets = game_object.get_possible_targets()
         self.assertEqual(found_targets, [game_object.players[2], game_object.players[4]])
