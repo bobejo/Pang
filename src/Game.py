@@ -7,6 +7,9 @@ from src.Player import Player, Roles
 from src.Character import Character
 
 
+log = logging.getLogger(__name__)
+
+
 class Game:
     def __init__(self, player_names):
         self.player_names = player_names
@@ -44,7 +47,7 @@ class Game:
         for player in self.players:
             for i in range(player.health):
                 player.add_cards(self.deck.take_top_card())
-        logging.info('Starting hand given to players')
+        log.info('Starting hand given to players')
 
     def get_sheriff(self):
         for player in self.players:
@@ -87,14 +90,14 @@ class Game:
         for i in range(player_index-player_range, player_index+player_range+1):
             possible_targets.append(players[i])
         possible_targets.remove(self.active_player)
-        logging.info('Possible targets are {}'.format(possible_targets))
+        log.info('Possible targets are {}'.format(possible_targets))
         return possible_targets
 
     def use_card(self, card, target=None):
         if isinstance(card, Cards.PangCard):
             if isinstance(target, Player):
                 if target in self.get_possible_targets():
-                    logging.info('Using pang! on {}'.format(target))
+                    log.info('Using pang! on {}'.format(target))
                     self.active_player.remove_card(card, self.deck)
                     if self.use_barrel(target):
                         return True
@@ -109,19 +112,19 @@ class Game:
             if isinstance(target, Player):
                 self.active_player.remove_card(card, self.deck)
                 # TODO create miss card trigger
-                logging.info('Using miss card')
+                log.info('Using miss card')
 
         elif isinstance(card, Cards.DrawCard):
-            logging.info('Using card {}, adding {} cards to hand.'.format(card, card.draw_amount))
+            log.info('Using card {}, adding {} cards to hand.'.format(card, card.draw_amount))
             self.active_player.add_cards(self.deck.take_top_card(amount=card.draw_amount))
             self.active_player.remove_card(card, self.deck)
         elif isinstance(card, Cards.EquipmentCard):
-            logging.info('Equipping {}, with ability to {}'.format(card, card.ability))
+            log.info('Equipping {}, with ability to {}'.format(card, card.ability))
             self.active_player.equipment = card
             self.active_player.remove_card(card)
 
         elif isinstance(card, Cards.WeaponCard):
-            logging.info('Equipping {}, setting range to {}'.format(card, card.weapon_range))
+            log.info('Equipping {}, setting range to {}'.format(card, card.weapon_range))
             self.active_player.weapon = card
             self.active_player.remove_card(card)
 

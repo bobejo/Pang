@@ -26,7 +26,7 @@ class TestGame(unittest.TestCase):
     def test_create_players_exception(self):
         player_names = ['Samuel', 'Gustav', 'Maria', 'Andrea', 'Tomas', 'Mona', 'Lennart', 'Monna']
         with self.assertRaises(StartGameException):
-            game_object = Game(player_names)
+            Game(player_names)
 
     def test_start_game(self):
         player_names = ['Samuel', 'Gustav', 'Maria', 'Andrea', 'Tomas', 'Mona', 'Lennart']

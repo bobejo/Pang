@@ -3,6 +3,8 @@ import enum
 from src.Cards import BeerCard
 
 
+log = logging.getLogger(__name__)
+
 class Player:
     def __init__(self, name, role, character):
         self.name = name
@@ -29,7 +31,7 @@ class Player:
         self.health += value
         if self.health < 1:
             if self.has_beer():
-                logging.info('Player {} has {} life and need to drink beer')
+                log.info('Player {} has {} life and need to drink beer')
                 beer_card = self.get_beer()
                 self.hand.remove(beer_card)
                 self.change_health(1)
